@@ -8,17 +8,17 @@ from datetime            import datetime
 from PIL                 import Image
 from io                  import BytesIO
 
-@st.cache
+@st.cache_data
 def convert_df(df):
     return df.to_csv(index=False).encode('utf-8')
 
 # Função para converter o df para excel
-@st.cache
+@st.cache_data
 def to_excel(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, sheet_name='Sheet1')
-    writer.save()
+    df.to_excel(writer, index=True, sheet_name='Sheet1')
+    writer.close()
     processed_data = output.getvalue()
     return processed_data
 
@@ -173,14 +173,4 @@ def main():
         st.write(df_RFV['acoes de marketing/crm'].value_counts(dropna=False))
 
 if __name__ == '__main__':
-	main()
-    
-
-
-
-
-
-
-
-
-
+    main()
